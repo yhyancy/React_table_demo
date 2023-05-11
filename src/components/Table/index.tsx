@@ -50,7 +50,7 @@ const Table: React.FC<TableProps> = ({
       <tr>
         {/* left fixed columns */}
         {fixedColumnsRes.map((column) => (
-          <th key={column.key}>{column.title}</th>
+          <th key={column.key} className="fixed">{column.title}</th>
         ))}
         {/* scrollable columns */}
         {scrollableColumnsRes.map((column) => (
@@ -74,7 +74,7 @@ const Table: React.FC<TableProps> = ({
         <tr key={row.id}>
           {/* left fixed columns */}
           {fixedColumnsRes.map((column) => (
-            <td key={column.key}>{row[column.key]}</td>
+            <td key={column.key} className="fixed">{row[column.key]}</td>
           ))}
           {/* scrollable columns */}
           {scrollableColumnsRes.map((column) => (
