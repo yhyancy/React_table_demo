@@ -1,4 +1,5 @@
 import Table from "./components/Table/index.tsx";
+import './App.css'
 
 const columns = [
   { header: 'ID', accessor: 'id', sortable: true },
