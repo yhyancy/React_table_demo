@@ -69,7 +69,7 @@ const Table: React.FC<TableProps> = ({
   const renderTableBody = () => {
     return (
       <tbody>
-        {/* fixed column */}
+        {/* left fixed column */}
         {fixedColumnsData.map((row) => (
           <div key={row.id} className="row">
             {columns.slice(0, fixedColumns).map((column) => (
