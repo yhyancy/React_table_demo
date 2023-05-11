@@ -42,20 +42,18 @@ const Table: React.FC<TableProps> = ({
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, sortedData.length);
   const pageData = sortedData.slice(startIndex, endIndex);
-  const fixedColumnsData = pageData.slice(0, fixedColumns);
-  // console.log("fixedColumnsData", fixedColumnsData);
-  const scrollableColumnsData = pageData.slice(fixedColumns);
-  // console.log("scrollableColumnsData", scrollableColumnsData);
+  const fixedColumnsRes = columns.slice(0, fixedColumns);
+  const scrollableColumnsRes = columns.slice(fixedColumns);
 
   const renderTableHeader = () => (
     <thead>
       <tr>
         {/* left fixed columns */}
-        {columns.slice(0, fixedColumns).map((column) => (
+        {fixedColumnsRes.map((column) => (
           <th key={column.key}>{column.title}</th>
         ))}
         {/* scrollable columns */}
-        {columns.slice(fixedColumns).map((column) => (
+        {scrollableColumnsRes.map((column) => (
           <th
             key={column.key}
             className={column.sortable ? "sortable" : undefined}
@@ -74,7 +72,12 @@ const Table: React.FC<TableProps> = ({
     <tbody>
       {pageData.map((row) => (
         <tr key={row.id}>
-          {columns.map((column) => (
+          {/* left fixed columns */}
+          {fixedColumnsRes.map((column) => (
+            <td key={column.key}>{row[column.key]}</td>
+          ))}
+          {/* scrollable columns */}
+          {scrollableColumnsRes.map((column) => (
             <td key={column.key}>{row[column.key]}</td>
           ))}
         </tr>
