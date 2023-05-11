@@ -20,7 +20,7 @@ const data = [
 function App() {
   return (
     <div className="App">
-      <Table data={data} columns={columns} />
+      <Table data={data} columns={columns} fixedColumns={0} />
     </div>
   );
 }

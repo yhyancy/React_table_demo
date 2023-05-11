@@ -11,8 +11,7 @@ interface TableProps {
   columns: TableColumn[];
   data: any[];
   pageSize?: number;
-  leftFixedColumns?: number;
-  rightFixedColumns?: number;
+  fixedColumns?: number;
 }
 
 enum SortOrder {
@@ -20,7 +19,12 @@ enum SortOrder {
   DESCENDING = "DESC",
 }
 
-const Table: React.FC<TableProps> = ({ columns, data, pageSize = 5 }) => {
+const Table: React.FC<TableProps> = ({
+  columns,
+  data,
+  pageSize = 5,
+  fixedColumns = 0,
+}) => {
   const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASCENDING);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,23 +42,26 @@ const Table: React.FC<TableProps> = ({ columns, data, pageSize = 5 }) => {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, sortedData.length);
   const pageData = sortedData.slice(startIndex, endIndex);
+  const fixedColumnsData = pageData.slice(0, fixedColumns);
+  const scrollableColumnsData = pageData.slice(fixedColumns);
+
 
   const renderTableHeader = () => {
     return (
       <thead>
-        <tr>
+        <div className="row">
           {columns.map((column) => (
-            <th
+            <div
               key={column.key}
-              className={column.sortable ? "sortable" : undefined}
+              className={column.sortable ? "cell" : undefined}
               onClick={() => handleSort(column)}
             >
               {column.title}
               {sortColumn === column &&
                 (sortOrder === SortOrder.ASCENDING ? " ▲" : " ▼")}
-            </th>
+            </div>
           ))}
-        </tr>
+        </div>
       </thead>
     );
   };
@@ -62,13 +69,28 @@ const Table: React.FC<TableProps> = ({ columns, data, pageSize = 5 }) => {
   const renderTableBody = () => {
     return (
       <tbody>
-        {pageData.map((row) => (
-          <tr key={row.id}>
-            {columns.map((column) => (
-              <td key={column.key}>{row[column.key]}</td>
+        {/* fixed column */}
+        {fixedColumnsData.map((row) => (
+          <div key={row.id} className="row">
+            {columns.slice(0, fixedColumns).map((column) => (
+                <div key={column.key} className="cell">
+                  {row[column.key]}
+                </div>
             ))}
-          </tr>
+          </div>
         ))}
+        {/* scrollable column */}
+        <div className="scrollable">
+          {scrollableColumnsData.map((row) => (
+            <div key={row.id} className="row">
+              {columns.slice(fixedColumns).map((column) => (
+                <div key={column.key} className="cell">
+                  {row[column.key]}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </tbody>
     );
   };
@@ -82,7 +104,7 @@ const Table: React.FC<TableProps> = ({ columns, data, pageSize = 5 }) => {
           <button
             key={pageNumber}
             className={pageNumber === currentPage ? "active" : undefined}
-            onClick={() => setCurrentPage(pageNumber)}
+            onClick={() => handlePageChange(pageNumber)}
           >
             {pageNumber}
           </button>
@@ -106,10 +128,14 @@ const Table: React.FC<TableProps> = ({ columns, data, pageSize = 5 }) => {
     setCurrentPage(1);
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="table-container">
       {/* Render the table UI */}
-      <table border={1}>
+      <table border={1} width="1000px">
         {renderTableHeader()}
         {renderTableBody()}
       </table>
