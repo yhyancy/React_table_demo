@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface TableColumn {
   header: string;
@@ -19,13 +19,35 @@ enum SortOrder {
   DESCENDING = "DESC",
 }
 
-export default function Table({ columns, data }: TableProps) {
+const Table: React.FC<TableProps> = ({ columns, data }) => {
+  const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASCENDING);
+
+  const sortedData = sortColumn
+  ? [...data].sort((a, b) => {
+      const aValue = a[sortColumn.accessor];
+      console.log('aValue',aValue);
+      const bValue = b[sortColumn.accessor];
+      console.log('bValue',bValue);
+      if (aValue === bValue) return 0;
+      const result = aValue < bValue ? -1 : 1;
+      return sortOrder === SortOrder.ASCENDING ? result : -result;
+    })
+  : data;
+
   const renderTableHeader = () => {
     return (
       <thead>
         <tr>
           {columns.map((column) => (
-            <th key={column.accessor}>{column.header}</th>
+            <th
+              key={column.accessor}
+              className={column.sortable ? "sortable" : undefined}
+              onClick={() => handleSort(column)}
+            >
+              {column.header}
+              {sortColumn === column && (sortOrder === SortOrder.ASCENDING ? ' ▲' : ' ▼')}
+            </th>
           ))}
         </tr>
       </thead>
@@ -35,7 +57,7 @@ export default function Table({ columns, data }: TableProps) {
   const renderTableBody = () => {
     return (
       <tbody>
-        {data.map((row) => (
+        {sortedData.map((row) => (
           <tr key={row.id}>
             {columns.map((column) => (
               <td key={column.accessor}>{row[column.accessor]}</td>
@@ -44,6 +66,21 @@ export default function Table({ columns, data }: TableProps) {
         ))}
       </tbody>
     );
+  };
+
+  const handleSort = (column: TableColumn) => {
+    if (!column.sortable) return;
+    if (sortColumn === column) {
+      setSortOrder(
+        sortOrder === SortOrder.ASCENDING
+          ? SortOrder.DESCENDING
+          : SortOrder.ASCENDING
+      );
+    } else {
+      setSortColumn(column);
+      setSortOrder(SortOrder.ASCENDING);
+    }
+    // setCurrentPage(1);
   };
 
   return (
@@ -56,4 +93,6 @@ export default function Table({ columns, data }: TableProps) {
       {/* Render the pagination UI */}
     </div>
   );
-}
+};
+
+export default Table;

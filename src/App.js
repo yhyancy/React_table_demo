@@ -2,7 +2,7 @@ import Table from "./components/Table/index.tsx";
 
 const columns = [
   { header: 'ID', accessor: 'id', sortable: true },
-  { header: 'Name', accessor: 'name' },
+  { header: 'Name', accessor: 'name',sortable: true },
   { header: 'Age', accessor: 'age', sortable: true },
   { header: 'Email', accessor: 'email' },
 ];
