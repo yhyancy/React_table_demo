@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './index.css'
 
 interface TableColumn {
   header: string;
@@ -19,7 +20,11 @@ enum SortOrder {
   DESCENDING = "DESC",
 }
 
-const Table: React.FC<TableProps> = ({ columns, data, pageSize = 5 }) => {
+const Table: React.FC<TableProps> = ({
+  columns,
+  data,
+  pageSize = 5,
+}) => {
   const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASCENDING);
   const [currentPage, setCurrentPage] = useState(1);
