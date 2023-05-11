@@ -42,42 +42,45 @@ const Table: React.FC<TableProps> = ({
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, sortedData.length);
   const pageData = sortedData.slice(startIndex, endIndex);
-  // const fixedColumnsData = pageData.slice(0, fixedColumns);
-  // const scrollableColumnsData = pageData.slice(fixedColumns);
+  const fixedColumnsData = pageData.slice(0, fixedColumns);
+  // console.log("fixedColumnsData", fixedColumnsData);
+  const scrollableColumnsData = pageData.slice(fixedColumns);
+  // console.log("scrollableColumnsData", scrollableColumnsData);
 
-  const renderTableHeader = () => {
-    return (
-      <thead>
-        <tr>
+  const renderTableHeader = () => (
+    <thead>
+      <tr>
+        {/* left fixed columns */}
+        {columns.slice(0, fixedColumns).map((column) => (
+          <th key={column.key}>{column.title}</th>
+        ))}
+        {/* scrollable columns */}
+        {columns.slice(fixedColumns).map((column) => (
+          <th
+            key={column.key}
+            className={column.sortable ? "sortable" : undefined}
+            onClick={() => handleSort(column)}
+          >
+            {column.title}
+            {sortColumn === column &&
+              (sortOrder === SortOrder.ASCENDING ? " ▲" : " ▼")}
+          </th>
+        ))}
+      </tr>
+    </thead>
+  );
+
+  const renderTableBody = () => (
+    <tbody>
+      {pageData.map((row) => (
+        <tr key={row.id}>
           {columns.map((column) => (
-            <th
-              key={column.key}
-              className={column.sortable ? "sortable" : undefined}
-              onClick={() => handleSort(column)}
-            >
-              {column.title}
-              {sortColumn === column &&
-                (sortOrder === SortOrder.ASCENDING ? " ▲" : " ▼")}
-            </th>
+            <td key={column.key}>{row[column.key]}</td>
           ))}
         </tr>
-      </thead>
-    );
-  };
-
-  const renderTableBody = () => {
-    return (
-      <tbody>
-        {pageData.map((row) => (
-          <tr key={row.id}>
-            {columns.map((column) => (
-              <td key={column.key}>{row[column.key]}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    );
-  };
+      ))}
+    </tbody>
+  );
 
   const renderPagination = () => {
     if (pageCount <= 1) return null;
