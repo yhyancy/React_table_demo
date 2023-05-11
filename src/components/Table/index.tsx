@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import './index.css'
+import "./index.css";
 
 interface TableColumn {
-  header: string;
-  accessor: string;
+  key: string;
+  title: string;
   sortable?: boolean;
 }
 
@@ -23,6 +23,7 @@ const Table: React.FC<TableProps> = ({
   columns,
   data,
   pageSize = 5,
+  fixedColumns = 0,
 }) => {
   const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASCENDING);
@@ -30,8 +31,8 @@ const Table: React.FC<TableProps> = ({
 
   const sortedData = sortColumn
     ? [...data].sort((a, b) => {
-        const aValue = a[sortColumn.accessor];
-        const bValue = b[sortColumn.accessor];
+        const aValue = a[sortColumn.key];
+        const bValue = b[sortColumn.key];
         if (aValue === bValue) return 0;
         const result = aValue < bValue ? -1 : 1;
         return sortOrder === SortOrder.ASCENDING ? result : -result;
@@ -44,21 +45,22 @@ const Table: React.FC<TableProps> = ({
   // const fixedColumnsData = pageData.slice(0, fixedColumns);
   // const scrollableColumnsData = pageData.slice(fixedColumns);
 
-
   const renderTableHeader = () => {
     return (
       <thead>
+        <tr>
           {columns.map((column) => (
             <th
-              key={column.accessor}
+              key={column.key}
               className={column.sortable ? "sortable" : undefined}
               onClick={() => handleSort(column)}
             >
-              {column.header}
+              {column.title}
               {sortColumn === column &&
                 (sortOrder === SortOrder.ASCENDING ? " ▲" : " ▼")}
             </th>
           ))}
+        </tr>
       </thead>
     );
   };
@@ -69,11 +71,10 @@ const Table: React.FC<TableProps> = ({
         {pageData.map((row) => (
           <tr key={row.id}>
             {columns.map((column) => (
-              <td key={column.accessor}>{row[column.accessor]}</td>
+              <td key={column.key}>{row[column.key]}</td>
             ))}
           </tr>
         ))}
-
       </tbody>
     );
   };
@@ -118,7 +119,7 @@ const Table: React.FC<TableProps> = ({
   return (
     <div className="table-container">
       {/* Render the table UI */}
-      <table border={2}>
+      <table border={1}>
         {renderTableHeader()}
         {renderTableBody()}
       </table>
