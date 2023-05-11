@@ -48,6 +48,7 @@ export default function Table({ columns, data }: TableProps) {
 
   return (
     <div className="table-container">
+      {/* Render the table UI */}
       <table border={2}>
         {renderTableHeader()}
         {renderTableBody()}
