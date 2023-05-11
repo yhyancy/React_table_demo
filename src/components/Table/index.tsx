@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./index.css";
+import './index.css'
 
 interface TableColumn {
-  key: string;
-  title: string;
+  header: string;
+  accessor: string;
   sortable?: boolean;
 }
 
@@ -23,7 +23,6 @@ const Table: React.FC<TableProps> = ({
   columns,
   data,
   pageSize = 5,
-  fixedColumns = 0,
 }) => {
   const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASCENDING);
@@ -31,8 +30,8 @@ const Table: React.FC<TableProps> = ({
 
   const sortedData = sortColumn
     ? [...data].sort((a, b) => {
-        const aValue = a[sortColumn.key];
-        const bValue = b[sortColumn.key];
+        const aValue = a[sortColumn.accessor];
+        const bValue = b[sortColumn.accessor];
         if (aValue === bValue) return 0;
         const result = aValue < bValue ? -1 : 1;
         return sortOrder === SortOrder.ASCENDING ? result : -result;
@@ -42,26 +41,24 @@ const Table: React.FC<TableProps> = ({
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, sortedData.length);
   const pageData = sortedData.slice(startIndex, endIndex);
-  const fixedColumnsData = pageData.slice(0, fixedColumns);
-  const scrollableColumnsData = pageData.slice(fixedColumns);
+  // const fixedColumnsData = pageData.slice(0, fixedColumns);
+  // const scrollableColumnsData = pageData.slice(fixedColumns);
 
 
   const renderTableHeader = () => {
     return (
       <thead>
-        <div className="row">
           {columns.map((column) => (
-            <div
-              key={column.key}
-              className={column.sortable ? "cell" : undefined}
+            <th
+              key={column.accessor}
+              className={column.sortable ? "sortable" : undefined}
               onClick={() => handleSort(column)}
             >
-              {column.title}
+              {column.header}
               {sortColumn === column &&
                 (sortOrder === SortOrder.ASCENDING ? " ▲" : " ▼")}
-            </div>
+            </th>
           ))}
-        </div>
       </thead>
     );
   };
@@ -69,28 +66,14 @@ const Table: React.FC<TableProps> = ({
   const renderTableBody = () => {
     return (
       <tbody>
-        {/* left fixed column */}
-        {fixedColumnsData.map((row) => (
-          <div key={row.id} className="row">
-            {columns.slice(0, fixedColumns).map((column) => (
-                <div key={column.key} className="cell">
-                  {row[column.key]}
-                </div>
+        {pageData.map((row) => (
+          <tr key={row.id}>
+            {columns.map((column) => (
+              <td key={column.accessor}>{row[column.accessor]}</td>
             ))}
-          </div>
+          </tr>
         ))}
-        {/* scrollable column */}
-        <div className="scrollable">
-          {scrollableColumnsData.map((row) => (
-            <div key={row.id} className="row">
-              {columns.slice(fixedColumns).map((column) => (
-                <div key={column.key} className="cell">
-                  {row[column.key]}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+
       </tbody>
     );
   };
@@ -135,7 +118,7 @@ const Table: React.FC<TableProps> = ({
   return (
     <div className="table-container">
       {/* Render the table UI */}
-      <table border={1} width="1000px">
+      <table border={2}>
         {renderTableHeader()}
         {renderTableBody()}
       </table>
