@@ -15,6 +15,12 @@ const data = [
   { id: 4, name: "David", age: 35, email: "david@example.com" },
   { id: 5, name: "Eve", age: 28, email: "eve@example.com" },
   { id: 6, name: "Frank", age: 22, email: "frank@example.com" },
+  { id: 7, name: "Alice", age: 25, email: "alice@example.com" },
+  { id: 8, name: "Bob", age: 30, email: "bob@example.com" },
+  { id: 9, name: "Charlie", age: 20, email: "charlie@example.com" },
+  { id: 10, name: "David", age: 35, email: "david@example.com" },
+  { id: 11, name: "Eve", age: 28, email: "eve@example.com" },
+  { id: 12, name: "Frank", age: 22, email: "frank@example.com" },
 ];
 
 function App() {
