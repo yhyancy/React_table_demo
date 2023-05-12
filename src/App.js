@@ -18,6 +18,7 @@ const data = [
 ];
 
 function App() {
+  console.log('this is test git hook')
   return (
     <div className="App">
       <Table data={data} columns={columns} fixedColumns={1} />
