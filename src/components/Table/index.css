@@ -1,6 +1,6 @@
 .table-container {
   position: relative;
-  width: 700px;
+  width: 1200px;
   height: 350px;
   overflow: overlay;
   max-width: 50%;
@@ -71,4 +71,10 @@ tr:last-child td {
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+tr>th:first-child{
+  position: fixed;
+  z-index: 1000;
+  width: 232px;
 }

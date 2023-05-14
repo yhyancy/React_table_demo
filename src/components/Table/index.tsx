@@ -22,7 +22,7 @@ enum SortOrder {
 const Table: React.FC<TableProps> = ({
   columns,
   data,
-  pageSize = 5,
+  pageSize = 10,
   fixedColumns = 0,
 }) => {
   const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
@@ -50,7 +50,9 @@ const Table: React.FC<TableProps> = ({
       <tr>
         {/* left fixed columns */}
         {fixedColumnsRes.map((column) => (
-          <th key={column.key} className="fixed">{column.title}</th>
+          <th key={column.key} className="fixed">
+            {column.title}
+          </th>
         ))}
         {/* scrollable columns */}
         {scrollableColumnsRes.map((column) => (
@@ -74,7 +76,9 @@ const Table: React.FC<TableProps> = ({
         <tr key={row.id}>
           {/* left fixed columns */}
           {fixedColumnsRes.map((column) => (
-            <td key={column.key} className="fixed">{row[column.key]}</td>
+            <td key={column.key} className="fixed">
+              {row[column.key]}
+            </td>
           ))}
           {/* scrollable columns */}
           {scrollableColumnsRes.map((column) => (
@@ -123,15 +127,17 @@ const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <div className="table-container">
-      {/* Render the table UI */}
-      <table border={1}>
-        {renderTableHeader()}
-        {renderTableBody()}
-      </table>
-      {/* Render the pagination UI */}
+    <>
+      <div className="table-container">
+        {/* Render the table UI */}
+        <table border={1}>
+          {renderTableHeader()}
+          {renderTableBody()}
+        </table>
+      </div>
+        {/* Render the pagination UI */}
       {renderPagination()}
-    </div>
+    </>
   );
 };
 
