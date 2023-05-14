@@ -1,57 +1,98 @@
 .table-container {
-  position: relative;
-  width: 1200px;
-  height: 350px;
-  overflow: overlay;
-  max-width: 50%;
+  width: 100%;
+  /* 需要调整，默认显示10条，大于10条记录出现垂直滚动条 */
+  max-height: 250px;
+  /* max-height: 350px; */
+  overflow: auto;
+  border-bottom: 1px solid black;
 }
 
 table {
-  border-collapse: collapse;
-  width: 1000px;
-  overflow-x: scroll;
   table-layout: fixed;
-  overflow: overlay !important;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid black;
 }
 
+/* 表格th/td样式 */
 th,
 td {
-  text-align: left;
-  padding: 8px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
+  width: 150px;
+  box-sizing: border-box;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  /*超出长度...*/
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
+  height: 30px;
 }
 
-th {
-  background-color: #f2f2f2;
+/* 表头固定 */
+thead tr th {
   position: sticky;
   top: 0;
-  z-index: 1;
+  background: black;
+  color: white;
+  height: 40px;
 }
 
-tr:nth-child(even) {
+/* 首列固定 */
+th:first-child,
+td:first-child {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  right: 0px;
+  border-left: 1px solid #dddddd;
+  width: 100px;
+  box-shadow:2px 1px 2px rgb(83, 81, 81);
+}
+
+/* 表头首列强制最顶层 */
+/* th:last-child, */
+th:first-child {
+  z-index: 3;
+  /*左上角单元格z-index，切记要设置，不然表格纵向横向滚动时会被该单元格右方或者下方的单元格遮挡*/
+  /* background: #fafafa; */
+  background: black;
+  color: white;
+}
+
+
+/* hover样式 */
+td:hover,tr:hover {
+  background-color: #f3f0f0;
+}
+
+/* 文本居中 */
+th,td{
+  text-align: center;
+}
+
+
+/* .fixed {
+  position: sticky;
+  left: 0;
+  right: 0px;
+  z-index: 2;
+  background-color: #fff;
+  border-right: 1px solid red;
+} */
+
+/* 设置偶数样式 */
+/* tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #ddd;
-}
+} */
 
 /* th:last-child,
 td:last-child {
   border-right-width: 0;
-}
+} */
 
 tr:last-child td {
   border-bottom-width: 0;
-} */
-.fixed {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background-color: #f2f2f2;
 }
 
 .pagination {
@@ -73,8 +114,4 @@ tr:last-child td {
   cursor: not-allowed;
 }
 
-tr>th:first-child{
-  position: fixed;
-  z-index: 1000;
-  width: 232px;
-}
+
