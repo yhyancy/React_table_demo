@@ -46,9 +46,18 @@ const Table: React.FC<TableProps> = ({ columns, data, fixedColumns = 0 }) => {
       <tr>
         {/* left fixed columns */}
         {fixedColumnsRes.map((column) => (
-          <th key={column.key} className="fixed">
-            {column.title}
-          </th>
+          // <th key={column.key} className="fixed">
+          //   {column.title}
+          // </th>
+          <th
+          key={column.key}
+          className={column.sortable ? "sortable" : undefined}
+          onClick={() => handleSort(column)}
+        >
+          {column.title}
+          {sortColumn === column &&
+            (sortOrder === SortOrder.ASCENDING ? " ▲" : " ▼")}
+        </th>
         ))}
         {/* scrollable columns */}
         {scrollableColumnsRes.map((column) => (
