@@ -21,10 +21,21 @@ const data = [
   { id: 10, name: "David", age: 35, email: "david@example.com" },
   { id: 11, name: "Eve", age: 28, email: "eve@example.com" },
   { id: 12, name: "Frank", age: 22, email: "frank@example.com" },
+  { id: 13, name: "Alice", age: 25, email: "alice@example.com" },
+  { id: 14, name: "Bob", age: 30, email: "bob@example.com" },
+  { id: 15, name: "Charlie", age: 20, email: "charlie@example.com" },
+  { id: 16, name: "David", age: 35, email: "david@example.com" },
+  { id: 17, name: "Eve", age: 28, email: "eve@example.com" },
+  { id: 18, name: "Frank", age: 22, email: "frank@example.com" },
+  { id: 19, name: "Alice", age: 25, email: "alice@example.com" },
+  { id: 20, name: "Bob", age: 30, email: "bob@example.com" },
+  { id: 21, name: "Charlie", age: 20, email: "charlie@example.com" },
+  { id: 22, name: "David", age: 35, email: "david@example.com" },
+  { id: 23, name: "Eve", age: 28, email: "eve@example.com" },
+  { id: 24, name: "Frank", age: 22, email: "frank@example.com" },
 ];
 
 function App() {
-  console.log('this is test git hook111')
   return (
     <div className="App">
       <Table data={data} columns={columns} fixedColumns={1} />

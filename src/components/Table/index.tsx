@@ -10,7 +10,7 @@ interface TableColumn {
 interface TableProps {
   columns: TableColumn[];
   data: any[];
-  pageSize?: number;
+  // pageSize?: number;
   fixedColumns?: number;
 }
 
@@ -19,15 +19,11 @@ enum SortOrder {
   DESCENDING = "DESC",
 }
 
-const Table: React.FC<TableProps> = ({
-  columns,
-  data,
-  pageSize = 10,
-  fixedColumns = 0,
-}) => {
+const Table: React.FC<TableProps> = ({ columns, data, fixedColumns = 0 }) => {
   const [sortColumn, setSortColumn] = useState<TableColumn | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASCENDING);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const sortedData = sortColumn
     ? [...data].sort((a, b) => {
@@ -103,6 +99,20 @@ const Table: React.FC<TableProps> = ({
             {pageNumber}
           </button>
         ))}
+        <div className="page-size">
+          <label htmlFor="page-size">
+            Page Size:
+          </label>
+          <select
+            id="page-size"
+            value={pageSize}
+            onChange={handlePageSizeChange}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
       </div>
     );
   };
@@ -126,6 +136,14 @@ const Table: React.FC<TableProps> = ({
     setCurrentPage(page);
   };
 
+  const handlePageSizeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const newPageSize = parseInt(event.target.value);
+    setCurrentPage(1);
+    setPageSize(newPageSize);
+  };
+
   return (
     <>
       <div className="table-container">
@@ -135,7 +153,7 @@ const Table: React.FC<TableProps> = ({
           {renderTableBody()}
         </table>
       </div>
-        {/* Render the pagination UI */}
+      {/* Render the pagination UI */}
       {renderPagination()}
     </>
   );

@@ -1,8 +1,6 @@
 .table-container {
   width: 100%;
-  /* 需要调整，默认显示10条，大于10条记录出现垂直滚动条 */
-  max-height: 250px;
-  /* max-height: 350px; */
+  max-height: 343px;
   overflow: auto;
   border-bottom: 1px solid black;
 }
@@ -61,7 +59,7 @@ th:first-child {
 }
 
 
-/* hover样式 */
+/* hover样式， todo */
 td:hover,tr:hover {
   background-color: #f3f0f0;
 }
@@ -112,6 +110,20 @@ tr:last-child td {
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.page-size{
+  margin-left: 15px;
+
+}
+.page-size label{
+  font-size: 14px;
+  margin: 10px;
+}
+
+.page-size select {
+  height: 24px;
+  padding: 4px;
 }
 
 
